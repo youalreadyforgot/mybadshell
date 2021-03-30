@@ -1,2 +1,2 @@
 # mybadshell
-### Bro hardly works
+### Bro it hardly works
