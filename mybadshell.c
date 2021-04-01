@@ -8,7 +8,7 @@
 int main()
 {
     int buffersize_string = 100;	
-    int numOfArgs = 3;
+    int numOfArgs = 10;
     int sizeOfArgs = 20;
     //Write prompt
     printf("login_prompt:");
@@ -33,7 +33,7 @@ int main()
     for(int i=0;i<=strlen(arg);i++)
         {
             if(arg[i] == '\n') {arg[i] = '\0';}
-	    if(arg[i] == ' ' || arg[i] == '\0') 
+	        if(arg[i] == ' ' || arg[i] == '\0') 
 	        {
 		    args[cnt][j] = '\0';
 		    cnt++;
@@ -48,18 +48,29 @@ int main()
 		}
 	}
     //Add a NULL to the end so exec can read
-    args[cnt +1] = NULL;
+    args[cnt] = NULL;
     
+    //char* test_arg[sizeOfArgs];
+    //strcpy(test_arg[0], "-la\0");
+    //strcpy(test_arg[1], "/home\0");
+    //printf("%d", cnt);
+
     //More test code
-    //for(int i=0;i<strlen(args[1]);i++)
-    //{printf("[%c]_", arg[i]);} 
-     
-    for(int i=0;i<cnt;i++)
-    {
-	printf("%s", args[i]);
-    }
+    //for(int i=0;i<strlen(args[2]);i++)
+    //{printf("[%c]_", arg[i]);}
+    //for(int i=0;i<sizeof(args) 
+    printf("[%s]", args[0]);
+    printf("[%s]", args[1]);
+    printf("[%s]", args[2]);
+    printf("[%s]", args[3]);
+    printf("[%s]", args[4]);
+
+    //for(int i=0;i<cnt;i++)
+    //{
+	//printf("%s", args[i]);
+    //}
     //Execute the command 
     execvp(args[0], args);
     //Catch any errors from the command stderr
-    perror("ERROR");
+    //perror("ERROR");
 }
