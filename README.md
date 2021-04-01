@@ -1,2 +1,2 @@
 # mybadshell
-### Bro it hardly works
+### It is interactive now with user@hostname 

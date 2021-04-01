@@ -4,14 +4,21 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
 #define MAX_ARG_SIZE 256
+#define HOST_NAME_MAX 1000
+#define USER_NAME_MAX 1000
 int main()
 {
     int buffersize_string = 100;	
     int numOfArgs = 10;
     int sizeOfArgs = 20;
     //Write prompt
-    printf("login_prompt:");
+    char* hostname = malloc(sizeof(char) * HOST_NAME_MAX + 1);
+    char* user = malloc(sizeof(char) * USER_NAME_MAX);
+    strcpy(user, getenv("USER"));
+    gethostname(hostname, HOST_NAME_MAX + 1);
+    printf("%s@%s:", user, hostname);
     char *arg = malloc(sizeof(char) * buffersize_string);
     //Write a fgets that seperates them by spaces
     fgets(arg, MAX_ARG_SIZE, stdin);
@@ -57,7 +64,11 @@ int main()
 	//printf("%s", args[i]);
     //}
     //Execute the command 
-    execvp(args[0], args);
+    bool cont = true;
+    while(cont == true)
+    {
+        execvp(args[0], args);
+    }
     //Catch any errors from the command stderr
     //perror("ERROR");
 }
