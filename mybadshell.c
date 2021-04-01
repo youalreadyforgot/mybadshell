@@ -50,20 +50,7 @@ int main()
     //Add a NULL to the end so exec can read
     args[cnt] = NULL;
     
-    //char* test_arg[sizeOfArgs];
-    //strcpy(test_arg[0], "-la\0");
-    //strcpy(test_arg[1], "/home\0");
-    //printf("%d", cnt);
 
-    //More test code
-    //for(int i=0;i<strlen(args[2]);i++)
-    //{printf("[%c]_", arg[i]);}
-    //for(int i=0;i<sizeof(args) 
-    printf("[%s]", args[0]);
-    printf("[%s]", args[1]);
-    printf("[%s]", args[2]);
-    printf("[%s]", args[3]);
-    printf("[%s]", args[4]);
 
     //for(int i=0;i<cnt;i++)
     //{
