@@ -5,9 +5,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
-#define MAX_ARG_SIZE 256
-#define HOST_NAME_MAX 1000
-#define USER_NAME_MAX 1000
+#define MAX_ARG_SIZE 20
+#define HOST_NAME_MAX 50
+#define USER_NAME_MAX 50
 int main()
 {
     int buffersize_string = 100;	
@@ -71,4 +71,6 @@ int main()
     }
     //Catch any errors from the command stderr
     //perror("ERROR");
+    //Free up some memory
+    //delete hostname, user, arg, args
 }
