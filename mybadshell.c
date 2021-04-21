@@ -70,4 +70,5 @@ int main()
           //Free up some memory
           //delete hostname, user, arg, args
 	}
+	printf("\nEXIT");
 }
