@@ -14,6 +14,7 @@ int main()
 {
         while(1){
 	    //Write prompt
+	    printf("Welcome to my bad shell");
 	    char* hostname = malloc(sizeof(char) * HOST_NAME_MAX + 1);
             char* user = malloc(sizeof(char) * USER_NAME_MAX);
             strcpy(user, getenv("USER"));
