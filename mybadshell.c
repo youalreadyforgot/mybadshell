@@ -62,9 +62,35 @@ int main()
            //{
 	       //printf("%s", args[i]);
            //}
+	   
+		
+		
            //Execute the command 
-           execvp(args[0], args);
-    
+	   pid_t pid, wpid;
+	   int status;
+	   
+	   pid = fork();
+	   if(pid == 0){
+	   	//Child process
+		// If exec returns the there is an error
+		if(execvp(args[0], args) == -1) {
+		    perror("mybadshell");
+		}
+		exit(EXIT_FAILURE);   
+	   }
+		
+	   else if(pid < 0) {
+               //Error Forking
+	       perror("mybadshell");
+	   }
+           else{
+               //Parent Process
+	       do{
+	           wpid = waitpid(pid, &status, WUNTRACED);
+	       } while(!WIFEXITED(status) && !WIFSIGNALED(status));
+	   }
+           
+    	  return 1;
           //Catch any errors from the command stderr
           //perror("ERROR");
           //Free up some memory
