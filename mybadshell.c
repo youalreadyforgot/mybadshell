@@ -19,7 +19,7 @@ int main()
             char* user = malloc(sizeof(char) * USER_NAME_MAX);
             strcpy(user, getenv("USER"));
             gethostname(hostname, HOST_NAME_MAX + 1);
-            printf("%s@%s:", user, hostname);
+            printf("%s@%s>", user, hostname);
             char *arg = malloc(sizeof(char) * BUFFER_SIZE);
             //Write a fgets that seperates them by spaces
             fgets(arg, MAX_ARG_SIZE, stdin);
