@@ -99,7 +99,7 @@ int main()
 	  free(arg);
 	  for (int i=0;i<NUM_ARGS;i++)
             {
-	        free args[i];
+	        free(args[i]);
             }
 	}
 	
