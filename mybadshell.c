@@ -90,11 +90,17 @@ int main()
 	       } while(!WIFEXITED(status) && !WIFSIGNALED(status));
 	   }
            
-    	  //return 1;
+    	  
           //Catch any errors from the command stderr
           //perror("ERROR");
           //Free up some memory
-          //delete hostname, user, arg, args
+          free hostname, user, arg;
+	  for (int i=0;i<NUM_ARGS;i++)
+            {
+	        free args[i];
+            }
 	}
+	
 	printf("\nEXIT");
+	return 1;
 }
