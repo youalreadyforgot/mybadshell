@@ -56,14 +56,17 @@ int main()
             //Add a NULL to the end so exec can read
             args[cnt] = NULL;
     
-
+	    //Check for exit in args
+	    if(strcmp(args, "exit")){
+	        return 1;
+	    }
 
            //for(int i=0;i<cnt;i++)
            //{
 	       //printf("%s", args[i]);
            //}
 	   
-		
+	  
 		
            //Execute the command 
 	   pid_t pid, wpid;
