@@ -58,7 +58,7 @@ int main()
     
 	    //Check for exit in args
             
-	    if(strcmp(args[i], "exit")){
+	    if(strcmp(args[0], "exit")){
 	        return 1;
 	    }
 
