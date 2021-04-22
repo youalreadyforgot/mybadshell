@@ -90,7 +90,7 @@ int main()
 	       } while(!WIFEXITED(status) && !WIFSIGNALED(status));
 	   }
            
-    	  return 1;
+    	  //return 1;
           //Catch any errors from the command stderr
           //perror("ERROR");
           //Free up some memory
