@@ -94,9 +94,9 @@ int main()
           //Catch any errors from the command stderr
           //perror("ERROR");
           //Free up some memory
-          free hostname;
-	  free user;
-	  free arg;
+          free(hostname);
+	  free(user);
+	  free(arg);
 	  for (int i=0;i<NUM_ARGS;i++)
             {
 	        free args[i];
