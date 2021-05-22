@@ -10,6 +10,7 @@
 #define USER_NAME_MAX 50
 #define BUFFER_SIZE 100
 
+
 char **parse_command(char *arg, char **args){
 	int argv = strlen(arg);
    
@@ -75,6 +76,73 @@ int mybadshell_start(char **args){
 	   return 1;
 }
 
+//Some shell built ins
+
+//String array with builts ins
+char* built_in[] = {
+	"cd",
+	"help",
+	"exit"
+};
+
+
+
+int sh_num_built_ins(){
+	return sizeof(built_in) / sizeof(char *);
+}
+
+int sh_cd(char **args){
+	if(args[1] == NULL){
+		fprintf(stderr, "mybadshell: expected argument to \"cd\"\n");
+	}
+	else{
+		if(chdir(args[1]) != 0){
+			perror("mybadshell");
+		}
+	}
+	return 1;
+}
+
+int sh_help(char **args){
+	int i;
+	printf("This is a shell bro you type commands in.\n");
+	printf("Here are the built ins\n");
+
+	for(i = 0; i<sh_num_built_ins(); i++){
+		printf(" %s\n", built_in[i]);
+	}
+	printf("Use man if you didn't find what you are looking for.\n");
+	return 1;
+}
+
+int sh_exit(char **args){
+	return 0;
+}
+
+//Not sure what this does yet something to do with correlating the functions to each other
+int (*builtin_func[]) (char **) = {
+  &sh_cd,
+  &sh_help,
+  &sh_exit
+};
+
+
+int sh_execute(char **args){
+	int i;
+	if(args[0] == NULL){
+		//Literally the idiot didn't type anything
+		return 0;
+	}
+
+	for(i = 0; i<sh_num_built_ins(); i++){
+		if(strcmp(args[0], built_in[i]) == 0){
+			return (*builtin_func[i])(args);
+		}
+	}
+
+	return mybadshell_start(args);
+}
+
 
 int main()
 {
@@ -110,7 +178,7 @@ int main()
 		
 		//Execute the command 
 
-		mybadshell_start(args);
+		sh_execute(args);
 
     	//Catch any errors from the command stderr
     	//perror("ERROR");
