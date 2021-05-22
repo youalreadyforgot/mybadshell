@@ -116,7 +116,7 @@ int sh_help(char **args){
 }
 
 int sh_exit(char **args){
-	return 0;
+	exit(0);
 }
 
 //Not sure what this does yet something to do with correlating the functions to each other
@@ -171,11 +171,7 @@ int main()
 		//Parse the args	
         parse_command(arg, args);
 
-	    //Check for exit in args
-	    if(strcmp(args[0], "exit") == 0){
-	        return 0;
-	    }
-		
+
 		//Execute the command 
 
 		sh_execute(args);
