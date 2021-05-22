@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -10,37 +9,72 @@
 #define HOST_NAME_MAX 50
 #define USER_NAME_MAX 50
 #define BUFFER_SIZE 100
+
+int mybadshell_start(char **args){
+	pid_t pid, wpid;
+	int status;
+	   
+
+	   pid = fork();
+	   if(pid == 0){
+	   		//Child process
+			// If exec returns the there is an error
+			if(execvp(args[0], args) == -1) {
+		    	perror("mybadshell");
+		}
+			exit(EXIT_FAILURE);   
+	   }
+		
+		else if(pid < 0) {
+        	//Error Forking
+	    	perror("mybadshell");
+	   }
+		else{
+			//Parent Process
+			do{
+				wpid = waitpid(pid, &status, WUNTRACED);
+	       } 
+		   while(!WIFEXITED(status) && !WIFSIGNALED(status));
+	   }
+
+	   return 1;
+}
+
+
 int main()
 {
-        while(1){
-	    //Write prompt
-	    printf("Welcome to my bad shell\n");
+	//Write prompt
+	printf("Welcome to my bad shell\n");
+	while(1){
+	    
+		//Creating hostname and user strings
 	    char* hostname = malloc(sizeof(char) * HOST_NAME_MAX + 1);
-            char* user = malloc(sizeof(char) * USER_NAME_MAX);
-            strcpy(user, getenv("USER"));
-            gethostname(hostname, HOST_NAME_MAX + 1);
-            printf("%s@%s>", user, hostname);
-            char *arg = malloc(sizeof(char) * BUFFER_SIZE);
-            //Write a fgets that seperates them by spaces
-            fgets(arg, MAX_ARG_SIZE, stdin);
+        char* user = malloc(sizeof(char) * USER_NAME_MAX);
+        strcpy(user, getenv("USER"));
+        gethostname(hostname, HOST_NAME_MAX + 1);
+        printf("%s@%s>", user, hostname);
+        
+		//Take in unparsed command
+		char *arg = malloc(sizeof(char) * BUFFER_SIZE);
+        
+		//Write a fgets that seperates them by spaces
+        fgets(arg, MAX_ARG_SIZE, stdin);
 
-            int argv = strlen(arg);
-            //Test Code for printing number of args
-            //printf("\n%d",argv);
+        int argv = strlen(arg);
    
-            // Write a loop to serperate into different strings
-            char *args[MAX_ARG_SIZE];
+        // Write a loop to serperate into different strings
+        char *args[MAX_ARG_SIZE];
     
-            for (int i=0;i<NUM_ARGS;i++)
-            {
+        for (int i=0;i<NUM_ARGS;i++)
+        {
 	        args[i] = malloc(sizeof(char) * MAX_ARG_SIZE);
-            }
-            int cnt = 0;
-            int j = 0;
+        }
+        int cnt = 0;
+        int j = 0;
 
-            for(int i=0;i<=strlen(arg);i++)
-            {
-                if(arg[i] == '\n') {
+        for(int i=0;i<=strlen(arg);i++)
+        {
+            if(arg[i] == '\n') {
 		    arg[i] = '\0';}
 	        if(arg[i] == ' ' || arg[i] == '\0'){
 		    args[cnt][j] = '\0';
@@ -49,64 +83,34 @@ int main()
 		}
 	
 	    else{
-		args[cnt][j] = arg[i];
-		 j++;
+			args[cnt][j] = arg[i];
+			j++;
 		}
-	    }
-            //Add a NULL to the end so exec can read
-            args[cnt] = NULL;
-    
-	    //Check for exit in args
-            
-	    if(strcmp(args[0], "exit")){
-	        return 1;
 	    }
 
-           //for(int i=0;i<cnt;i++)
-           //{
-	       //printf("%s", args[i]);
-           //}
-	   
-	  
+		//Add a NULL to the end so exec can read
+        args[cnt] = NULL;
+
+	    //Check for exit in args
+	    if(strcmp(args[0], "exit") == 0){
+	        return 0;
+	    }
 		
-           //Execute the command 
-	   pid_t pid, wpid;
-	   int status;
-	   
-	   pid = fork();
-	   if(pid == 0){
-	   	//Child process
-		// If exec returns the there is an error
-		if(execvp(args[0], args) == -1) {
-		    perror("mybadshell");
-		}
-		exit(EXIT_FAILURE);   
-	   }
-		
-	   else if(pid < 0) {
-               //Error Forking
-	       perror("mybadshell");
-	   }
-           else{
-               //Parent Process
-	       do{
-	           wpid = waitpid(pid, &status, WUNTRACED);
-	       } while(!WIFEXITED(status) && !WIFSIGNALED(status));
-	   }
-           
-    	  
-          //Catch any errors from the command stderr
-          //perror("ERROR");
-          //Free up some memory
-          free(hostname);
-	  free(user);
-	  free(arg);
-	  for (int i=0;i<NUM_ARGS;i++)
-            {
-	        free(args[i]);
-            }
+		//Execute the command 
+
+		mybadshell_start(args);
+
+    	//Catch any errors from the command stderr
+    	//perror("ERROR");
+    	//Free up some memory
+    	free(hostname);
+		free(user);
+		free(arg);
+		for (int i=0;i<NUM_ARGS;i++)
+    		{
+	    		free(args[i]);
+        	}
+	//End of loop
 	}
-	
-	printf("\nEXIT");
-	return 1;
+	return 0;
 }
