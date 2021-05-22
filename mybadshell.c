@@ -10,6 +10,41 @@
 #define USER_NAME_MAX 50
 #define BUFFER_SIZE 100
 
+char **parse_command(char *arg, char **args){
+	int argv = strlen(arg);
+   
+    
+    for (int i=0;i<NUM_ARGS;i++)
+    {
+	    args[i] = malloc(sizeof(char) * MAX_ARG_SIZE);
+    }
+    int cnt = 0;
+    int j = 0;
+
+    for(int i=0;i<=strlen(arg);i++)
+    {
+        if(arg[i] == '\n') {
+		arg[i] = '\0';
+		}
+
+	    if(arg[i] == ' ' || arg[i] == '\0'){
+		args[cnt][j] = '\0';
+		cnt++;
+		j=0;
+		}
+	
+	    else{
+			args[cnt][j] = arg[i];
+			j++;
+		}
+	}
+
+	//Add a NULL to the end so exec can read
+    args[cnt] = NULL;
+	return args;
+
+}
+
 int mybadshell_start(char **args){
 	pid_t pid, wpid;
 	int status;
@@ -60,36 +95,13 @@ int main()
 		//Write a fgets that seperates them by spaces
         fgets(arg, MAX_ARG_SIZE, stdin);
 
-        int argv = strlen(arg);
+    
    
         // Write a loop to serperate into different strings
         char *args[MAX_ARG_SIZE];
     
-        for (int i=0;i<NUM_ARGS;i++)
-        {
-	        args[i] = malloc(sizeof(char) * MAX_ARG_SIZE);
-        }
-        int cnt = 0;
-        int j = 0;
-
-        for(int i=0;i<=strlen(arg);i++)
-        {
-            if(arg[i] == '\n') {
-		    arg[i] = '\0';}
-	        if(arg[i] == ' ' || arg[i] == '\0'){
-		    args[cnt][j] = '\0';
-		    cnt++;
-		    j=0;
-		}
-	
-	    else{
-			args[cnt][j] = arg[i];
-			j++;
-		}
-	    }
-
-		//Add a NULL to the end so exec can read
-        args[cnt] = NULL;
+		//Parse the args	
+        parse_command(arg, args);
 
 	    //Check for exit in args
 	    if(strcmp(args[0], "exit") == 0){
